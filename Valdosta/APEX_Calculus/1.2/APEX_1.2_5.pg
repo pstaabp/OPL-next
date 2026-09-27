@@ -1,0 +1,119 @@
+#Problem APEX 1.2.5
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros("PGstandard.pl", "PGML.pl", "parserPopUp.pl", "PGcourse.pl");
+
+$showPartialCorrectAnswers = 0;
+
+Context("Numeric");
+
+$a = Real(random(1,   10));
+$c = Real(random(-10, 10));
+$L = $a - $c;
+
+$eps = DropDown([ "\(\epsilon\)", "\(\delta\)" ], 0, useHTMLSelect => 0);
+$del = DropDown([ "\(\epsilon\)", "\(\delta\)" ], 1, useHTMLSelect => 0);
+
+$m = Real(1);
+
+BEGIN_PGML
+Fill in each blank to construct an [`\epsilon`]-[`\delta`] proof showing that 
+[```
+  \lim_{x \to [$c]}\; ([$a] - x) = [$L].
+```]
+Where it asks for [`\delta`], give the largest value that will work.
+
+
+*Proof.* Let [_]{$eps} [` > 0`] be given.  Let [`\delta`] be the product 
+[`\delta = \Big(`][_]{$m}[`\Big)\Big(\epsilon\Big).`]
+
+If 
+
+>>[`\Big|x - `] [_]{$c} [`\Big| < `] [_]{$del}<<
+
+then after some algebra we arrive at
+
+>>[`\Big|([$a]-x) - `] [_]{$L} [`\Big| < `] [_]{$eps}<<
+
+which is what we wanted to prove.
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+First, we should do some scratch work
+
+With [`f(x) = [$a] - x `], and limiting value \`[$L]`\, we must solve the
+inequality:
+
+>>[`|f(x) - [$L]| < \epsilon`]<<
+
+>>[` |([$a] - x) - [$L]| < \epsilon`] <<
+
+>>[` |[$c] - x| < \epsilon`]<<
+
+>>[` -\epsilon < [$c] - x < \epsilon`]<<
+
+>>[` -\epsilon < x - ([$c]) < \epsilon`]<<
+
+
+This implies we can let [`\delta = \epsilon`].  Now reverse
+the steps to construct the proof.
+
+
+*Proof of the limit:*
+
+Let [`\epsilon > 0`] be given.  Then with [`\delta = \epsilon`],
+and with [`x`] satisfying [`|x - ([$c])| < \delta`],
+
+>>[`|x - ([$c])| < \delta = \epsilon`]<<
+
+>>[`-\epsilon < x - ([$c]) < \epsilon`]<<
+
+>>[` -\epsilon < [$c] - x < \epsilon`]<<
+
+>>[`-\epsilon < ([$a] - x) - [$L] < \epsilon`]<<
+
+>>[`|([$a] - x) - [$L] | < \epsilon`]<<
+
+The last line shows [` |f(x) - [$L]| < \epsilon`], which is what we wanted to prove.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+
+
+__DATA__
+---
+author:
+  institution: Valdosta State University
+  name: S. V. Ault
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: Definitions and existence (conceptual)
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGML.pl
+- parserPopUp.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/Valdosta/APEX_Calculus/1.2/APEX_1.2_5.pg
+textbook_info:
+- AuthorText: Hartman
+  EditionText: '3.0'
+  TitleText: APEX Calculus
+  chapter: '1'
+  problems:
+  - '5'
+  section: '2'
+testing:
+- seed: 123456
+  answers:
+  - '\(\epsilon\)'
+  - 1
+  - -4
+  - '\(\delta\)'
+  - 11 
+  - '\(\epsilon\)'

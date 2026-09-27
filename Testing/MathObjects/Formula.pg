@@ -1,0 +1,30 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+$a = non_zero_random(-5,5);
+$n = random(2,8);
+
+$f = Compute("$a x^$n")->reduce;
+$df = $f->D('x')->reduce;
+
+BEGIN_PGML
+Find the derivative of [`` f(x) = [$f] ``]
+
+[`` f'(x) = ``] [_]{$df}
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 123456
+  answers:
+  - '8x^3'
+- seed: 3114
+  answers:
+  - '15x^4'
+- seed: 3733
+  answers:
+  - '-8x^3'

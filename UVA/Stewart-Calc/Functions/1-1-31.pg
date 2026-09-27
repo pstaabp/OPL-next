@@ -1,0 +1,56 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+$a = non_zero_random(-8, 8);
+$f = Compute("sqrt(x + $a)")->reduce;
+
+$showPartialCorrectAnswers = 0;
+
+BEGIN_PGML
+Let [``` f(x) = [$f]. ```]
+Use interval notation to indicate the domain of [` f(x) `].
+
+Domain = [_]{Interval("[-$a, inf)")}{25}
+
+[@ helpLink('interval notation') @]*
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: AlgDom1
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- models
+library_info:
+  chapter: Functions
+  section: Domain and range
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-31.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

@@ -1,0 +1,14 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserImplicitPlane.pl');
+
+Context("ImplicitPlane")->variables->are(x=>'Real',y=>'Real', z=> 'Real');
+
+$P = ImplicitPlane("x+2y-z=5");
+
+BEGIN_PGML
+
+[`[$P]`] : [_]{$P}
+
+END_PGML
+
+ENDDOCUMENT();

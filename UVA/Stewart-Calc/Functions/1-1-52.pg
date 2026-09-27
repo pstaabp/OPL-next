@@ -1,0 +1,54 @@
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+Context('Numeric');
+
+$p    = random(20, 40);
+$area = Compute("($p/2) x - x^2/2 - pi x/8")->reduce;
+
+BEGIN_PGML
+A Norman window has the shape of a rectangle surmounted by a
+semicircle.  If the perimeter of the window is [$p] feet, express
+the area [`A`] of the window as a function of the width [`x`] (across the base)
+of the window.
+
+[`A(x)`] = [_]{$area}{35}
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- ' ''models'
+library_info:
+  chapter: Quadratic equations and functions
+  section: Applications and models
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-52.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

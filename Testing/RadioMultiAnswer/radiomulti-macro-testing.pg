@@ -1,0 +1,99 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'contextFraction.pl',
+    'parserPopUp.pl',            'PGcourse.pl'
+);
+
+Context('Fraction-NoDecimals');
+
+do {
+    $a = random(2, 6);
+    $b = random(1, 9);
+    $c = random(2, 6);
+} until $a * $b - $c != 0;
+
+$d = random(2, 9);
+
+$lhs = Formula("$a($b - x)");
+$rhs = Formula("$c($d x + 1)");
+
+$sol = Fraction("($a * $b - $c) / ($c * $d + $a)")->reduce;
+
+$rma = RadioMultiAnswer(
+    [
+        [
+            'The only solution is %s. '
+                . '(Give an integer or simplified fraction.)',
+            $sol
+        ],
+        ['The solution is all real numbers.'],
+        ['The solution is the empty set.']
+    ],
+    0,
+    formats => [
+        '%1$s. The only solution is %2$s.',
+        '%1$s. The solution is all real numbers.',
+        '%1$s. The solution is the empty set.'
+    ],
+    tex_formats => [
+        '%1$s\text{. The only solution is }{%2$s}.',
+        '%1$s\text{. The solution is all real numbers.}',
+        '%1$s\text{. The solution is the empty set.}'
+    ],
+    values       => [ 'single solution', 'all reals', 'no solution' ],
+    showInStatic => 0
+);
+$rma->{cmp}[0][0]->rh_ans(studentsMustReduceFractions => 1);
+
+$dropdown = DropDown([ [ 'Inconsistent', 'Conditional', 'Identity' ] ], 1);
+
+Context()->operators->undefine('+', '-', '*', ' *', '* ', '^', '**');
+
+BEGIN_PGML
+Solve the following equation.
+
+>>[`[$lhs] = [$rhs]`]<<
+
+[@ MODES(
+    TeX => '',
+    PTX => '',
+    HTML => 
+        'Select the correct choice below, and, if necessary, fill in the '
+        . 'answer box to complete your choice.'
+) @]
+
+[_]{$rma}{5}
+
+What is the type of equation? [_]{$dropdown}
+END_PGML
+
+BEGIN_PGML_HINT
+To solve a linear equation, first simplify the expressions on each side of the
+equation.  Collect variable terms on one side of the equation and constant terms
+on the other.  The isolate the variable and solve.  Check the proposed solution
+in the original equation.
+END_PGML_HINT
+
+BEGIN_PGML_SOLUTION
+Simplify the expressions on both sides of the equation to obtain
+
+>> [``[$a * $b] - [$a]x = [$c * $d]x + [$c]``] <<
+
+Subtract [`[@ $a * $b @]`] from both sides to obtain
+
+>> [``-[$a]x = [$c * $d]x + [$c - $a * $b]``] <<
+
+Subtract [`[@ $c * $d @]x`] from both sides to obtain
+
+>> [``[@ -$a - $c * $d @]x = [$c - $a * $b]``] <<
+
+Divide by [`[@ -$a - $c * $d @]`] on both sides to obtain
+
+>> [``x = [$sol]``] <<
+
+Thus the solution set is [`\left\{[$sol]\right\}`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

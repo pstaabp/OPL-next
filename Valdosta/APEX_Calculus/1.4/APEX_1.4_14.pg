@@ -1,0 +1,79 @@
+#Problem APEX 1.4.14
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+
+$showPartialCorrectAnswers = 1;
+
+$a = random(2,10,1)*random(-1,1,2);
+$b = random(2,10,1)*random(-1,1,2);
+$c = random(1,10,1);
+$d = random(2,8,1)*random(-1,1,2);
+
+$ans1 = $c;
+$ans2 = 0;
+$ans3 = "DNE";
+
+BEGIN_PGML
+Evaluate the limits.
+
+[```
+   f(x) = \begin{cases}
+	[$a] x^2 + [$b] x + [$c] &  x < 0 \\
+	[$d] \sin x  & x \geq 0
+	\end{cases}
+```]
+
+Enter *DNE* if the limit does not exist.
+
+a) [`` \lim_{x \to 0^-} f(x) = ``] [_]{$ans1}{10}
+
+b) [`` \lim_{x \to 0^+} f(x) = ``] [_]{$ans2}{10}
+
+c) [`` \lim_{x \to 0} f(x) = ``] [_]{$ans3}{10}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[``` 
+  \lim_{x \to 0^-} f(x) = \lim_{x \to 0} ([$a] x^2 + [$b] x + [$c]) = 
+  [$a](0)^2 + [$b](0) + [$c] = [$ans1].
+```]
+[```
+  \lim_{x \to 0^+} f(x) = \lim_{x \to 0} [$d] \sin x = [$d] \sin(0) = 0.
+```]
+Since the left and right hand limits are not equal, [`` \lim_{x \to 0} f(x) ``] does not exist.
+ 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    
+
+__DATA__
+---
+author:
+  institution: Valdosta State University
+  name: S. V. Ault
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: One-sided limits - concept of
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGchoicemacros.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/Valdosta/APEX_Calculus/1.4/APEX_1.4_14.pg
+textbook_info:
+- AuthorText: Hartman
+  EditionText: '3.0'
+  TitleText: APEX Calculus
+  chapter: '1'
+  problems:
+  - '14'
+  section: '4'
+

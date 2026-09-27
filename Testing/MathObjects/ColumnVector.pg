@@ -1,0 +1,36 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Vector');
+
+$k = non_zero_random(-5,5);
+
+$v = ColumnVector([random(-3,3),random(-3,3),random(-3,3)]);
+
+BEGIN_PGML
+Calculate the following operations
+
+[`` [$k] [$v] = ``] [_]*{$k*$v}
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 123456
+  answers:
+  - -2
+  - -2
+  - 0
+- seed: 6103
+  answers:
+  - -3
+  - -9
+  - -9
+- seed: 4552
+  answers:
+  - 0
+  - 0
+  - -10

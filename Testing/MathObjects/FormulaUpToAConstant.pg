@@ -1,0 +1,26 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextUnits.pl', 'parserFormulaUpToConstant.pl');
+
+$a = random(1,5);
+$f = FormulaUpToConstant("sin($a x)+C");
+
+BEGIN_PGML
+
+[`[$f]=`] [_]{$f}
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 123456
+  answers:
+  - 'sin(4x)+C'
+- seed: 8463
+  answers:
+  - 'sin(x)+C'
+- seed: 2668
+  answers:
+  - 'sin(3x)+C'

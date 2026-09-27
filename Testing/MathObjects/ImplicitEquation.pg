@@ -1,0 +1,16 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserImplicitEquation.pl');
+
+Context('ImplicitEquation');
+
+$r = random(1,9);
+
+$circle = ImplicitEquation("x^2+y^2=$r^2", limits => [[-$r-1, $r+1],[-$r-1,$r+1]]);
+
+BEGIN_PGML
+
+[`$circle`] : [_]{$circle}
+
+END_PGML
+
+ENDDOCUMENT();

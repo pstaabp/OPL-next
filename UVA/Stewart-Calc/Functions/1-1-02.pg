@@ -1,0 +1,125 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'plots.pl', 'PGcourse.pl');
+
+Context('Interval');
+
+$x1f = random(-5, -4, 1);    # left end of f
+$x1g = random(-5, -4, 1);    # left end of g
+$y1f = random( 3,  5, 1);
+$y1g = random(-3, -2, 1);
+
+$x0f = $x1f - 1;
+$y0f = $y1f - 1;
+
+$x2 = random(-3, -2, 1);     # common point
+$y2 = random(-1,  1, 1);
+
+$x4f = random(-1,  1, 1);    # min for f
+$x4g = random(-1,  1, 1);    # max for g
+$y4f = random(-5, -3, 1);
+$y4g = random( 3,  5, 1);
+
+$x5 = random( 2,   3, 1);
+$y5 = random(-0.5, 2, 0.5);
+
+$x6f = random( 4,  5, 1);    # right end for f  # estimate value here
+$x6g = random( 4,  5, 1);
+$y6f = random( 3,  5, 1);
+$y6g = random(-5, -4, 1);
+
+$showPartialCorrectAnswers = 1;
+$fudge                     = 0.08;
+$fudge                     = 0.05 if ($x6f - $x5 > 1.1);
+$hermite_f1                = new Hermite(
+    [ $x0f, $x1f, $x2, $x4f, $x5, $x6f + $fudge ],
+    [ $y0f, $y1f, $y2, $y4f, $y5, $y6f ],
+    [ 1,    0,    -1,  0,    1,   .4 ]
+);
+$fudge      = 0.08;
+$fudge      = 0.05 if ($x6g - $x5 > 1.1);
+$hermite_g1 = new Hermite(
+    [ $x1g - .04, $x2, $x4g, $x5, $x6g + $fudge ],
+    [ $y1g,       $y2, $y4g, $y5, $y6g ],
+    [ 2,          1,   0,    -1,  -2 ]
+);
+
+$plot = Plot(
+    xmin        => -6,
+    xmax        =>  6,
+    xtick_delta =>  2,
+    xminor      =>  2,
+    ymin        => -6,
+    ymax        =>  6,
+    ytick_delta =>  2,
+    yminor      =>  2,
+);
+
+$plot->add_function(
+    $hermite_f1->rf_f, 'x', -5.5, 5.5,
+    color => 'blue',
+    steps => 200
+);
+$plot->add_function(
+    $hermite_g1->rf_f, 'x', -5.5, 5.5,
+    color => 'red',
+    steps => 200
+);
+
+BEGIN_PGML
+
+>> [!!]{$plot}{300} <<
+
+Use the graphs of [`f`] (in blue) and [`g`] (in red)
+to answer these questions: 
+
+
+a) What is the value of [`f`] at [$x1f]? [_]{Real($y1f)}{15} 
+  
+b) For what values of [`x`] is [`f(x) = g(x)`]?  [_]{List("$x2, $x5")}{15}  
+(Separate your answers with commas.)
+  
+c) Estimate the solution of the equation [`g(x) = [$y4g] `]. [_]{Real($x4g)}{15} 
+  
+d) On what interval is the function [` f`] decreasing? [_]{Interval("($x1f,$x4f)")}{15} 
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: incrFc
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- models
+library_info:
+  chapter: Functions
+  section: Graphs
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- plot.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-02.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

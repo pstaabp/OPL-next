@@ -1,0 +1,45 @@
+# WeBWorK problem written by Alex Jordan
+DOCUMENT();
+
+loadMacros(qw(
+	PGstandard.pl PGML.pl PGtikz.pl parserCheckboxList.pl parserRadioMultiAnswer.pl
+));
+
+$x = list_random(-2, 2);
+$y = list_random(-2, 2);
+
+$image = createTikZImage();
+$image->BEGIN_TIKZ
+\fill[color=blue!20] (0,0) -| ($x,$y) -| cycle;
+\draw[{stealth}-{stealth}] (-2,0) -- (2,0);
+\draw[{stealth}-{stealth}] (0,-2) -- (0,2);
+\draw[-{stealth}, ultra thick, color=blue] (0,0) -- ($x,0);
+\draw[-{stealth}, ultra thick, color=blue] (0,0) -- (0,$y);
+\node at ($x/2,$y/2) {\(H\)};
+END_TIKZ
+
+$checks = CheckboxList(
+	[
+		'\(\vec{0}\) is not in \(H\)',
+		'There are vectors \(\vec{u}\) and \(\vec{v}\) in \(H\) with \(\vec{u}+\vec{v}\) not in \(H\).',
+		'There is a vector \(\vec{u}\) in \(H\) and a scalar \(c\) in \(\mathbb{R}\) with \(c\vec{u}\) not in \(H\).',
+	],
+	[2]
+);
+
+$rma = RadioMultiAnswer(
+	[ ['\(H\) is a subspace.'], [ '\(H\) is not a subspace because (check all that apply): %s', $checks ] ],
+	1,
+	checkTypes => 0,
+	labels     => [ 'Yes', 'No' ]
+);
+
+BEGIN_PGML
+In the image below, a subset [`H`] of [`\mathbb{R}^2`] is shaded. Is [`H`] a subspace of [`\mathbb{R}^2`]?
+
+>> [! R^2 with one quadrant and its boundary shaded !]{$image} <<
+
+[_]{$rma}
+END_PGML
+
+ENDDOCUMENT();

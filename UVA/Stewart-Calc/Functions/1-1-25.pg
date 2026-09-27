@@ -1,0 +1,60 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',     'PGML.pl',
+    'PGchoicemacros.pl', 'extraAnswerEvaluators.pl',
+    'PGcourse.pl'
+);
+
+Context('Interval');
+$a   = non_zero_random(3, 9, 1);
+$ans = Interval("(-inf,0]U[$a,inf)");
+
+BEGIN_PGML
+Let
+[``` f(x) = \sqrt[4]{x^2 - [$a] x}. ```]
+Use interval notation to indicate the domain of [` f(x) `].
+
+Domain = [_]{$ans}{25}
+
+[@ helpLink('interval notation') @]*
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: algebra_functions_domain_range_high_root
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- ' ''models'
+library_info:
+  chapter: Functions
+  section: Domain and range
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-25.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

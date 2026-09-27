@@ -1,0 +1,65 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'PGcourse.pl'
+);
+
+@shuffled     = random_subset(3, 0 .. 2);
+@answer_texts = (
+    'The difference of two matrices of different sizes is not defined.',
+    'The operation is not defined because the number '
+        . 'of columns in the first matrix is not the same '
+        . 'as the number of rows in the second matrix.',
+    'The operation is not defined because the number '
+        . 'of rows in the first matrix is not the same as the '
+        . 'number of columns in the second matrix.'
+);
+
+Context('Matrix');
+$A = Matrix(
+    [ [ random(-9, 9), random(-9, 9) ], [ random(-9, 9), random(-9, 9) ] ]);
+$B = Matrix(
+    [ [ random(-9, 9), random(-9, 9) ], [ random(-9, 9), random(-9, 9) ] ]);
+$difference = $A - $B;
+
+$rma = RadioMultiAnswer(
+    [
+        [ '\(A - B = \) %s*', $difference ],
+        [ $answer_texts[ $shuffled[0] ] ],
+        [ $answer_texts[ $shuffled[1] ] ],
+        [ $answer_texts[ $shuffled[2] ] ]
+    ],
+    0
+);
+
+Context()
+    ->operators->undefine('+', '-', '*', ' *', '* ', '/', ' /', '/ ', '//',
+        '^', '**');
+
+BEGIN_PGML
+Let [``A = [$A]``] and [``B = [$B]``].
+
+Find [`A - B`] if possible.  If it is not possible to perform this operation,
+explain.
+
+Select the correct choice below, and, if neccessary, fill in the answer boxes to
+complete your choice.
+
+[_]{ answer => $rma, width => 5 }
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[``
+    [$A] - [$B]
+    = \begin{bmatrix}
+        [@ $A->{data}[0]{data}[0] @] - [@ $B->{data}[0]{data}[0] @] &
+        [@ $A->{data}[0]{data}[1] @] - [@ $B->{data}[0]{data}[1] @] \\
+        [@ $A->{data}[1]{data}[0] @] - [@ $B->{data}[1]{data}[0] @] &
+        [@ $A->{data}[1]{data}[1] @] - [@ $B->{data}[1]{data}[1] @]
+    \end{bmatrix}
+    = [$difference]
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

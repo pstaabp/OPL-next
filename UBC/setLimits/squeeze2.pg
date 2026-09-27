@@ -1,0 +1,71 @@
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+$a = random(2001, 2040);
+$b = random(1,    4);
+$c = random(1,    4);
+
+$numer = Compute("$b x^2 + cos(x)")->reduce;
+$denom = Compute("$c x^2 + $a")->reduce;
+
+BEGIN_PGML
+[` \displaystyle \lim_{x \to \infty} \frac{[$numer]}{[$denom]} =  `]  [_]{$b/$c}
+
+END_PGML
+
+$numer1 = Compute("$b x^2 -1")->reduce;
+$numer2 = Compute("$b x^2 +1")->reduce;
+
+BEGIN_PGML_HINT
+
+Since [`-1 \le \cos(x) \le 1`], we have 
+
+[``` \frac{[$numer1]}{[$denom]} \leq \frac{[$numer]}{[$denom]} 
+\leq \frac{[$numer2]}{[$denom]} ```]
+
+Now apply the squeeze theorem.
+END_PGML_HINT
+
+BEGIN_PGML_SOLUTION
+
+Since [`-1 \le \cos(x) \le 1`], we have 
+[``` \frac{[$numer1]}{[$denom]} \leq \frac{[$numer]}{[$denom]} 
+\leq \frac{[$numer2]}{[$denom]} ```]. 
+
+Let's focus on:
+
+
+ [``` \lim_{x \to \infty} \frac{[$numer1]}{[$denom]} = \lim_{x \to \infty} 
+  \frac{[$b]+\frac{1}{x^2}}{[$c]+\frac{2010}{x^2}} = \frac{[$b]}{[$c]}```]
+
+Similarly:
+
+
+[``` \lim_{x \to \infty} \frac{[$numer2]}{[$denom]} = \lim_{x \to \infty} 
+  \frac{[$b]-\frac{1}{x^2}}{[$c]+\frac{2010}{x^2}} = \frac{[$b]}{[$c]}```]
+
+ Therefore, by the squeeze theorem: 
+
+[``` \lim_{x \to \infty} \frac{[$numer1]}{[$denom]}  = \frac{[$b]}{[$c]}  ```]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();      
+
+__DATA__
+---
+author: {}
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: Limits at infinity, horizontal and oblique asymptotes
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- MathObjects.pl
+- problemPanic.pl
+- PGcourse.pl
+problem_path: webwork-open-problem-library/OpenProblemLibrary/UBC/setLimits/squeeze2.pg

@@ -1,0 +1,107 @@
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'plots.pl', 'PGcourse.pl');
+
+Context('Numeric');
+
+$xmin = -2;
+$xmax = 6;
+
+@m = map { non_zero_random(-3, 3); } (0 .. 2);
+
+$bp1 = random(0, 1);
+$bp2 = random(3, 4);
+
+@b = map { $_ >= 0 ? non_zero_random(-1, 3) : random(3, 5) } @m;
+
+# determine the bounding box for the plot
+
+$ymin = min(
+    $b[0],                         $m[0] * ($bp1 - $xmin) + $b[0], $b[1],
+    $m[1] * ($bp2 - $bp1) + $b[1], $b[2], $m[2] * ($xmax - $bp2) + $b[2],
+);
+$ymax = max(
+    $b[0],                         $m[0] * ($bp1 - $xmin) + $b[0], $b[1],
+    $m[1] * ($bp2 - $bp1) + $b[1], $b[2], $m[2] * ($xmax - $bp2) + $b[2],
+);
+
+$plot = Plot(
+    xmin        => $xmin - 1,
+    xmax        => $xmax + 1,
+    xtick_delta => 2,
+    ymin        => $ymin - 1 > -2 ? -2 : $ymin - 1,
+    ymax        => $ymax + 1,
+    ytick_delta => 2
+);
+
+$plot->add_function(
+    "$m[0]*(x - $xmin)+$b[0] for x in {$xmin,$bp1) using color:blue");
+$plot->add_function(
+    "$m[1]*(x - $bp1)+$b[1] for x in [$bp1,$bp2] using color:blue");
+$plot->add_function(
+    "$m[2]*(x - $bp2)+$b[2] for x in ($bp2, $xmax} using color:blue");
+
+$f1 = Compute("$m[0]*(x-$xmin)+$b[0]")->reduce;
+$f2 = Compute("$m[1]*(x- $bp1) + $b[1]")->reduce;
+$f3 = Compute("$m[2]*(x- $bp2) + $b[2]")->reduce;
+
+BEGIN_PGML
+
+>> [!!]{$plot}{300} <<
+
+The above graph is the plot of the piecewise-defined function
+[```
+f(x) = \begin{cases}
+    f_1(x) & x < [$bp1] \\
+    f_2(x) & [$bp1] \leq x \leq [$bp2] \\
+    f_3(x) & x > [$bp2]
+    \end{cases}
+```]
+Find formulas for [`f_1(x)`], [`f_2(x)`], and [`f_3(x)`].
+
+[`f_1(x)`] = [_]{$f1}{25}
+
+[`f_2(x)`] = [_]{$f2}{25}
+
+[`f_3(x)`] = [_]{$f3}{25}
+
+END_PGML
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: piecewise
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- ' ''models'
+library_info:
+  chapter: Functions
+  section: Piecewise functions
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- plots.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-45.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

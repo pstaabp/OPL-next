@@ -1,0 +1,34 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'PGcourse.pl'
+);
+
+$A = Matrix([ [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ], [ 1, 2, 3, 4 ] ]);
+$B = Matrix([ [ 1, 2 ], [ 1, 2 ], [ 1, 2 ], [ 1, 2 ] ]);
+
+$rma = RadioMultiAnswer(
+    [
+        [
+            'The product \('
+                . $A->TeX
+                . $B->TeX
+                . ' \) is defined. '
+                . 'The dimension of the product is %s \(\times\) %s.',
+            3,
+            2
+        ],
+        [ 'The product \(' . $A->TeX . $B->TeX . ' \) is NOT defined.' ]
+    ],
+    0
+);
+
+BEGIN_PGML
+Select the correct choice below, and, if neccessary, fill in the answer boxes to complete your
+choice.
+
+[_]{$rma}{5}
+END_PGML
+
+ENDDOCUMENT();

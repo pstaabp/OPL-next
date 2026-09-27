@@ -1,0 +1,21 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl');
+
+Context('Fraction');
+
+do {
+    $a = non_zero_random(-5, 5);
+    $b = random(2, 5);
+} until gcd($a, $b) == 1;
+
+$n = random(2, 8);
+
+$f = Compute("($a/$b) x^$n")->reduce;
+
+BEGIN_PGML
+
+[`` [$f] = ``] [_]{$f}
+END_PGML
+
+ENDDOCUMENT();

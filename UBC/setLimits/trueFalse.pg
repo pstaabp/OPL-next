@@ -1,0 +1,57 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserPopUp.pl', 'PGcourse.pl');
+
+Context("Numeric");
+$showPartialCorrectAnswers = 0;
+
+BEGIN_PGML
+
+a) If [`` \lim_{x \to a} f(x) = L ``], then [`f(a) = L`].  [_]{DropDownTF(0)}
+
+b) If [`` \lim_{x \to a} f(x) = L ``], and [`` \lim_{x \to a} g(x) = L ``]
+then [`f(a)= g(a)`], [_]{DropDownTF(0)}
+
+c) The limit [`` \lim_{x \to a} \frac{f(x)}{g(x)} ``]
+  does not exist if [`g(a)=0 `], [_]{DropDownTF(0)}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+The correct answers are: "False, False, False".
+
+ You can see all the answers are false by considering:
+[```h(x) = \begin{cases}
+         \frac{x^2-4}{x+2} &  x \neq -2\\
+         0 & x = -2\\
+       \end{cases}```]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+
+__DATA__
+---
+author: {}
+description: A series of questions related to the limits of the products and quotients of functions.
+keywords:
+- calculus
+- limits
+library_info:
+  chapter: Limits and continuity
+  section: Definitions and existence (conceptual)
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGchoicemacros.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UBC/setLimits/trueFalse.pg
+textbook_info:
+- AuthorText: Briggs
+  EditionText: '5e'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '2'
+  problems:
+  - '55'
+  section: '3'
+

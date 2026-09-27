@@ -1,0 +1,72 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Interval');
+
+$a  = non_zero_random(-8, 8, 1);
+$r1 = non_zero_random(-8, 8, 1);
+$r2 = non_zero_random(-8, 8, 1);
+$c  = $r1 * $r2;
+$b  = -($r1 + $r2);
+
+while ($b == 0 || $b**2 == 1) {
+    $r1 = non_zero_random(-8, 8, 1);
+    $r2 = non_zero_random(-8, 8, 1);
+    $c  = $r1 * $r2;
+    $b  = -($r1 + $r2);
+}
+
+$ans =
+    $r1 == $r2  ? Interval("(-inf,$r1) U ($r1,inf)")
+    : $r1 < $r2 ? Interval("(-inf,$r1) U ($r1,$r2) U ($r2, inf)")
+    :             Interval("(-inf,$r2) U ($r2,$r1) U ($r1,inf)");
+
+BEGIN_PGML
+
+Let
+[``` f(x) = \frac{x ? {[$a]}}{x^2 ? {[$b]} x ? {[$c]}}. ```]
+
+
+Domain = [_]{$ans}{25}
+
+[@ helpLink('interval notation') @]*
+END_PGML
+
+ENDDOCUMENT(); 
+
+__DATA__
+---
+MLT: HolesRationalFunctions
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- models
+library_info:
+  chapter: Functions
+  section: Domain and range
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-24.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

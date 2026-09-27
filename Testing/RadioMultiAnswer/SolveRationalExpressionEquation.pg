@@ -1,0 +1,63 @@
+################################################################################################
+# Setup and Macros
+################################################################################################
+DOCUMENT();
+
+loadMacros(
+    "PGstandard.pl",
+    "MathObjects.pl",
+    "PGML.pl",
+    "parserRadioMultiAnswer.pl",
+    "PGcourse.pl"
+);
+
+################################################################################################
+# Variables, Formulas, and Graphs
+################################################################################################
+TEXT(beginproblem());
+
+$b = random(1, 3);
+do { $a = random( $b + 1, 5); } until gcd($a, $b) == 1;
+$n = random(1, 3);
+
+$lhs = Formula("1/(x - $n) - $b/($a x - $a * $n)")->reduce;
+$rhs = Formula("($a - $b)/($a x - $a * $n)")->reduce;
+
+$rma = RadioMultiAnswer([
+        ['The solution set is \(\big\{\) %s \(\big\}\).', 0],
+        ['The solution set is \(\big\{w|w\neq\) %s \(\big\}\).', $n],
+        ['The solution set is the set of real numbers.'],
+        ['The solution set is the empty set.']
+    ], 1,
+    formats => [
+        '%s. The solution set is {%s}.',
+        '%s. The solution set is {w|w is not %s}.',
+        '%s. The solution set is the set of real numbers.',
+        '%s. The solution set is the empty set.'
+    ],
+    tex_formats => [
+        '%s\text{. The solution set is }\{%s\}.',
+        '%s\text{. The solution set is }\{w|w\neq %s\}.',
+        '%s\text{. The solution set is the set of real numbers.}',
+        '%s\text{. The solution set is the empty set.}'
+    ]
+);
+
+Context()->operators->undefine("+", "-", '*', ' *', '* ', '/', ' /', '/ ', '//', '^', '**');
+
+################################################################################################
+# Main Text
+################################################################################################
+
+BEGIN_PGML
+Solve the following equation involving rational expressions.
+
+>>[``[$lhs] = [$rhs]``]<<
+
+Find the solution of the given equation.  Select the correct choice below, and, if necessary,
+fill in the answer box to complete your choice.
+
+[__________]{$rma}
+END_PGML
+
+ENDDOCUMENT();

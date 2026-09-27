@@ -1,0 +1,32 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'draggableProof.pl');
+
+$proof = DraggableProof(
+    # These are the correct statements of the proof in the correct order.
+    [
+        'Assume \(\sqrt{2} = \frac{a}{b}\) where \(a\) and \(b\) are integers with \(\gcd(a,b) = 1\).',
+        'Then \(2 = \frac{a^2}{b^2}\).',
+        'So \(a^2 = 2b^2\).',
+        'Thus \(a^2\) is even which implies that \(a\) must also be even.',
+        'Let \(a = 2k\) for \(k\) some integer.',
+        'We can then write \(2 = \frac{4k^2}{b^2}\) which implies that \(b^2 = 2k^2\).',
+        'Thus \(b^2\) is even, and so \(b\) must also be even.',
+        'Hence \(a\) and \(b\) are both even, and this contradicts the initial assumption that \(\gcd(a,b) = 1\).',
+        'Therefore \(\sqrt{2}\) is not rational.'
+    ],
+    # These are extra statements that are not needed.
+    [
+        'Then \(a\) is odd.',
+        'Thus \(b^2\) cannot be rational.',
+        'Therefore \(a = 2b\).'
+    ]
+);
+
+BEGIN_PGML
+Prove that [`\sqrt{2}`] is irrational.
+
+[_]{$proof}
+END_PGML
+
+ENDDOCUMENT();

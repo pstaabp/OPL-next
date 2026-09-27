@@ -1,0 +1,71 @@
+#Problem APEX 1.4.21
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+## Updated July 2023
+
+$showPartialCorrectAnswers = 1;
+
+$a = random(2,8,1);
+
+BEGIN_PGML
+Evaluate the limits.
+
+[```
+   f(x) = \begin{cases}
+	\dfrac{|[$a] x|}{x}  & x \neq 0 \\
+	0  & x = 0
+	\end{cases}
+```]
+
+Enter *DNE *if the limit does not exist.
+
+a) [`` \lim_{x \to 0^-} f(x) = ``] [_]{-$a}{10}
+
+b) [`` \lim_{x \to 0^+} f(x) = ``] [_]{$a}{10}
+
+c) [`` \lim_{x \to 0} f(x) = ``] [_]{"DNE"}{10}
+
+d) [`` f(0) = ``] [_]{0}{10}
+
+END_PGML
+
+#####################################################################
+
+BEGIN_PGML_SOLUTION
+Since the left- and right-hand limits are different, [`` \lim_{x \to 0} f(x) ``] does not exist. Evaluate [`f(x)`] at [`x=0`] using the definition.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    
+
+
+
+__DATA__
+---
+author:
+  institution: Valdosta State University
+  name: S. V. Ault
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: One-sided limits - concept of
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGchoicemacros.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/Valdosta/APEX_Calculus/1.4/APEX_1.4_21.pg
+textbook_info:
+- AuthorText: Hartman
+  EditionText: '3.0'
+  TitleText: APEX Calculus
+  chapter: '1'
+  problems:
+  - '21'
+  section: '4'
+

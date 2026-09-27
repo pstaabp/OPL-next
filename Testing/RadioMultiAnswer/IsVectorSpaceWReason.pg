@@ -1,0 +1,49 @@
+# WeBWorK problem written by Alex Jordan 
+DOCUMENT();
+
+loadMacros(qw(
+    PGstandard.pl PGML.pl parserRadioMultiAnswer.pl
+));
+
+Context("Vector");
+
+$rma = RadioMultiAnswer([
+        ['\(V\) is a vector subspace of \(\mathbb{R}^2\).'],
+        ['\(V\) is not a vector subspace of \(\mathbb{R}^2\) because \(\vec{0}\) is not in \(V\).'],
+        ['\(V\) is not a vector subspace of \(\mathbb{R}^2\) because for example %s* and %s* are in \(V\), but their sum is not.', ColumnVector(1,0), ColumnVector(0,1)],
+        ['\(V\) is not a vector subspace of \(\mathbb{R}^2\) because for example %s is a real number and %s* is in \(V\), but their product is not in \(V\).', -1, ColumnVector(1,1)],
+    ],
+    3,
+    checker => sub {
+        my ($cor, $stu, $self, $ans) = @_;
+        if ($stu->[0] == 3) {
+            # student chose C and entered two vectors
+            my ($u, $v) = @{$stu->[3]};
+            my @u = $u->value;
+            my @v = $v->value;
+            Value::Error("At least one of your vectors is not in \(H\)")
+                unless ($u[0] >= 0 && $u[1] >= 0 && $v[0] >= 0 && $v[1] >= 0);
+            Value::Error("The sum of your vectors is in \(H\)");
+        } elsif ($stu->[0] == 4) {
+            # student chose D and entered a scalar and a vector
+            my ($c, $v) = @{$stu->[4]};
+            my @v = $v->value;
+            Value::Error("Your vector is not in \(H\)")
+                unless ($v[0] >= 0 && $v[1] >= 0);
+            Value::Error("The product of your scalar and your vector is still in \(H\)")
+                if ($c*$v[0] >= 0 && $c*$v[1] >= 0);
+            return 1;
+        }
+        return 0;
+    }
+);
+
+BEGIN_PGML
+Let [`V`] be the first quadrant of the [`xy`]-plane in [`\mathbb{R}^2`].
+In other words [`V=\left\{ \begin{bmatrix}x\\y\end{bmatrix}\mid x,y\geq0\right\}`].
+Which of the following is correct?
+
+[_]*{$rma}
+END_PGML
+
+ENDDOCUMENT();

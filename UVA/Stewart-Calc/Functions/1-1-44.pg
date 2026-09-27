@@ -1,0 +1,54 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Numeric');
+
+$a = random(3,   9);
+$b = random(100, 129);
+
+BEGIN_PGML
+Find an expression for the function [`f(x)`] whose graph is given by the
+top half of the circle
+[```  (x-[$a])^2 + y^2 = [$b].```]
+
+[`f(x)`] = [_]{Compute("sqrt($b - (x-$a)**2)")}{25}
+
+END_PGML
+ENDDOCUMENT();
+
+
+__DATA__
+---
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- models
+library_info:
+  chapter: Functions
+  section: Graphs
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-44.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

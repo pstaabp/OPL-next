@@ -1,0 +1,19 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextUnits.pl', 'parserNumberWithUnits.pl',
+  'parserFormulaWithUnits.pl');
+Context('Units')->withUnitsFor('mass');
+
+$v1 = Compute('1.234 g');
+
+$x = NumberWithUnits('17', 'm');
+$f = FormulaWithUnits('x^2', 'lb');
+
+BEGIN_PGML
+- [_]{$v1}
+- [_]{$x}
+- [_]{$f}
+
+END_PGML
+
+ENDDOCUMENT();
+

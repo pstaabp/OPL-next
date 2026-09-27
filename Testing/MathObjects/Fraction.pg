@@ -1,0 +1,43 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl', 'PGcourse.pl');
+
+Context('Fraction');
+
+$a = non_zero_random(-5, 5);
+$b = non_zero_random(-5, 5);
+$c = non_zero_random(-15, 15);
+
+$xi = Fraction($c,$a)->reduce;
+$yi = Fraction($c,$b)->reduce;
+
+BEGIN_PGML
+Find the intercepts of the line [` [$a] x + [$b] y = [$c]`]
+
+a) [`x`]-intercept: [_]{$xi}
+
+b) [`y`]-intercept: [_]{$yi}
+
+
+END_PGML
+
+ENDDOCUMENT();
+__DATA__
+description: Evaluating exponential functions
+library:
+  subject: Algebra
+  chapter: 
+  section: Exponential functions
+
+testing: 
+  - 
+    seed: 4055
+    answers:
+      - '-7/5'
+      - '7/2'
+  - 
+    seed: 123456
+    answers: 
+      - -3
+      - 3
+

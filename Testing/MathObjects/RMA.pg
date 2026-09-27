@@ -1,0 +1,30 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'PGcourse.pl'
+);
+
+
+$y = random(0, 4);
+
+$rma = RadioMultiAnswer(
+    [
+        [ 'The equation of the line is \(y = \) %s.', '2x' ],
+        ['No such line exists.']
+    ],
+    $y < 4 ? 1 : 0
+);
+
+BEGIN_PGML
+Is there a line through the points [`(0, 0)`], [`(1, 2)`], and [`(2, [$y])`]?
+If there is, then give the equation for this line.
+
+[_]{$rma}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Solution explanation goes here.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

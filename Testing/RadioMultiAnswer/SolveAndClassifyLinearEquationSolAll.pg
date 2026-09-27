@@ -1,0 +1,109 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'MathObjects.pl', 'PGML.pl', 'parserRadioMultiAnswer.pl', 'PGcourse.pl');
+
+$a = random(2, 4);
+$b = random(3, 7);
+$c = $a * $b;
+
+$rma = RadioMultiAnswer(
+	[
+		[
+			'The solution set is \(\big\{\) %s \(\big\}\).  '
+				. 'The equation is a conditional equation.'
+				. $BR
+				. MODES(TeX => '{\color{blue} ', HTML => '<span style="color:DarkBlue">')
+				. '(Simplify your answer.  Use a comma to separate answers as needed.)'
+				. MODES(TeX => '}', HTML => '</span>'),
+			List(0)
+		],
+		[
+			'The solution set is \(\big\{x|x\neq\) %s \(\big\}\).  '
+				. 'The equation is an identity.'
+				. $BR
+				. MODES(TeX => '{\color{blue} ', HTML => '<span style="color:DarkBlue">')
+				. '(Simplify your answer.  Use a comma to separate answers as needed.)'
+				. MODES(TeX => '}', HTML => '</span>'),
+			List(0)
+		],
+		['The solution set is the set of real numbers.  The equation is an identity.'],
+		['The solution set is the empty set.  The equation is inconsistent.']
+	],
+	2,
+	formats => [
+		'%1$s.'
+			. MODES(HTML => '<div style="display:inline-block;vertical-align:top;text-align:left">', TeX => '')
+			. 'The solution set is {%2$s}.'
+			. MODES(HTML => '<br>', TeX => "~~n")
+			. 'The equation is a conditional equation.'
+			. MODES(HTML => '</div>', TeX => ''),
+		'%1$s. '
+			. MODES(HTML => '<div style="display:inline-block;vertical-align:top;text-align:left">', TeX => '')
+			. 'The solution set is {x|x &ne; %2$s}.'
+			. MODES(HTML => '<br>', TeX => "~~n")
+			. 'The equation is an identity.'
+			. MODES(HTML => '</div>', TeX => ''),
+		'%1$s. '
+			. MODES(HTML => '<div style="display:inline-block;vertical-align:top;text-align:left">', TeX => '')
+			. 'The solution set is the set of real numbers.'
+			. MODES(HTML => '<br>', TeX => "~~n")
+			. 'The equation is an identity.'
+			. MODES(HTML => '</div>', TeX => ''),
+		'%1$s. '
+			. MODES(HTML => '<div style="display:inline-block;vertical-align:top;text-align:left">', TeX => '')
+			. 'The solution set is the empty set.'
+			. MODES(HTML => '<br>', TeX => "~~n")
+			. 'The equation is inconsistent.'
+			. MODES(HTML => '</div>', TeX => '')
+	],
+	tex_formats => [
+		'%1$s.\ {\text{The solution set is }\{%2$s\}.\\'
+			. '\text{The equation is a conditional equation.}}',
+		'%1$s.\ {\text{The solution set is }\{x|x\neq %2$s\}.\\'
+			. '\text{The equation is an identity.}}',
+		'%1$s.\ {\text{The solution set is the set of real numbers.}\\'
+			. '\text{The equation is an identity.}}',
+		'%1$s.\ {\text{The solution set is the empty set.}\\' . '\text{The equation is inconsistent.}}'
+	],
+	checkTypes => 0
+);
+
+Context()->operators->undefine('+', '-', '*', ' *', '* ', '^', '**');
+
+BEGIN_PGML
+Solve the following equation.  Then identify the equation as an identity, an inconsistent
+equation, or a conditional equation.
+
+>>[`[$a](x - [$b]) = [$a] x - [$c]`]<<
+
+Select the correct choice below, and fill in the answer box if necessary.
+
+[_____]{$rma}
+END_PGML
+
+$showHint = 0;
+BEGIN_PGML_HINT
+Simplify each side of the original equation and then solve for [`x`] if possible.  Note that an
+equation that is satisfied by every real number for which both sides are defined is an identity,
+and an equation that is satisfied by at least one real number but is not an identity is a
+conditional equation.  An inconsistent equation is an equation that has no solution.  Find the
+set of values of [`x`] for which the equation is satisfied.
+END_PGML_HINT
+
+BEGIN_PGML_SOLUTION
+Distribute [`[$a]`] through the parentheses on the left to obtain
+
+>>[``[$a] x - [$c] = [$a] x - [$c]``]<<
+
+Add [`[@ $a * $b @]`] to both sides to obtain
+
+>>[``[$a]x = [$a]x``]<<
+
+Subtract [`[$a]x`] from both sides to obtain
+
+>>[``0 = 0``]<<
+
+This means that the equation is satisfied for all real numbers, and the equation is an identity.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

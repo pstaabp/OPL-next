@@ -1,0 +1,35 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'parserCheckboxList.pl',
+);
+
+$values    = [ 'Part 1', 'Part 2', 'Part 3' ];
+$checkList = CheckboxList(
+    [$values], [ 0, 1 ],
+    labels        => 'ABC',
+    displayLabels => 1,
+    values        => $values
+);
+
+$rma = RadioMultiAnswer(
+    [ [ "The solutions are: %s", $checkList ], ['This makes no sense.'] ],
+    0,
+    formats     => [ '%s. The solutions are %s.', '%s. This makes no sense.' ],
+    tex_formats => [
+        '%s\text{. The solutions are }{%s}.',
+        '%s\text{. This makes no sense.}'
+    ],
+    checkTypes  => 0,
+    uncheckable => 'shift',
+    values      => [ 'The solutions are ?. ', 'This makes no sense. ' ]
+);
+
+BEGIN_PGML
+Give the answer.  (Hint: The solutions are Part 1 and Part2.)
+
+[_]{$rma}
+END_PGML
+
+ENDDOCUMENT();

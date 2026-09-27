@@ -1,0 +1,47 @@
+DOCUMENT();
+
+loadMacros(
+	'PGstandard.pl',      'MathObjects.pl', 'PGML.pl', 'parserRadioMultiAnswer.pl',
+	'contextFraction.pl', 'PGcourse.pl'
+);
+
+Context('Fraction-NoDecimals');
+Context()->flags->set(reduceFractions => 0);
+
+$a = random(2, 4);
+$b = random(3, 7);
+$c = $a * $b;
+
+$rma = RadioMultiAnswer(
+	[
+		[
+			'The solution set is \(\big\{\) %s \(\big\}\).  '
+				. 'The equation is a conditional equation.',
+			List(0)
+		],
+		[
+			'The solution set is \(\big\{x|x\neq\) %s \(\big\}\).  '
+				. 'The equation is an identity.',
+			List(0)
+		],
+		['The solution set is the set of real numbers.  The equation is an identity.'],
+		['The solution set is the empty set.  The equation is inconsistent.']
+	],
+	2,
+	checkTypes => 0
+);
+
+Context()->operators->undefine('+', '-', '*', ' *', '* ', '^', '**');
+
+BEGIN_PGML
+Solve the following equation.  Then identify the equation as an identity, an inconsistent
+equation, or a conditional equation.
+
+>>[`[$a](x - [$b]) = [$a] x - [$c]`]<<
+
+Select the correct choice below, and fill in the answer box if necessary.
+
+[_____]{$rma}
+END_PGML
+
+ENDDOCUMENT();

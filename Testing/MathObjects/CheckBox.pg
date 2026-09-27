@@ -1,0 +1,49 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserCheckboxList.pl', 'PGcourse.pl');
+
+$k1 = random(3, 7, 2);
+$k2 = random(3, 7, 2);
+$n1 = random(2, 8, 2);
+$n2 = random(2, 8, 2);
+
+@functions = (
+    'e^x', '\sin x', '\cos x', "x^$k1", "x^$n1", '\ln x',
+    "\frac{x^$k2}{1+x^$n1}", "\frac{x^$n2}{1+x^$n1}",
+);
+
+@all_odd = (0, 1, 0, 1, 0, 0, 1, 0);
+@slice   = random_subset(4, 0 .. $#all_odd);
+@odd     = @all_odd[@slice];
+@odd_loc = grep { $odd[$_] == 1 } 0 .. $#odd;
+
+$checks = CheckboxList(
+    [ (map {"\(\displaystyle $_\)"} @functions[@slice]), "None of These" ],
+    ~~@odd_loc);
+
+BEGIN_PGML
+Select all odd functions: 
+
+[_]{$checks}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The correct answer is [$checks->correct_ans].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 123456
+  answers:
+  - ['B3']
+- seed: 56
+  answers:
+  - ['B0', 'B1', 'B2']
+- seed: 2884
+  answers:
+  - ['B1']

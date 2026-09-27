@@ -1,0 +1,50 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Interval');
+
+$a = random(-5,5);
+$mid = random(2,8); 
+$b = $a+2*$mid;
+$c = $mid + random(5,10); 
+$c2 = $c-1;
+
+
+$A = Interval("[$a,$b]");
+$B = Interval("[$mid,$c]");
+$C = Interval("($a,$c2)");
+
+BEGIN_PGML
+Let [` A= [$A] `], [` B = [$B] `] and [`C = [$C]`]. 
+Enter the following intervals:
+
+* [`` A \cup B = ``] [_]{Compute("$A U $B")}
+* [`` A \cap B = ``] [_]{$A->intersect($B)}
+* [`` A \cup C = ``] [_]{Compute("$A U $C")}
+* [`` B \cap C = ``] [_]{$B->intersect($C)}
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 123456
+  answers:
+  - '[2,10]'
+  - '[4,10]'
+  - '[2,10]'
+  - '[4,9)'
+- seed: 4395
+  answers:
+  - '[1,7]'
+  - '[2,5]'
+  - '[1,6)'
+  - '[2,6)'
+- seed: 9718
+  answers:
+  - '[-5,11]'
+  - '{5}'
+  - '[-5,10)'
+  - '[5,10)'

@@ -1,0 +1,73 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+$a = random(2, 8, 2);
+$b = random(1, 9, 2);
+$c = non_zero_random(-6, 6, 1);
+
+Context('Numeric');
+
+$showPartialCorrectAnswers = 1;
+
+$a  = random(1, 9, 2);
+$b  = non_zero_random(-8, 8, 2);
+$mb = -$b;
+$f  = Formula("(x-$a)/((x^2)(x+$b))")->reduce;
+
+$ans = $mb > $a ? Compute("Infinity") : Compute("-Infinity");
+
+BEGIN_PGML
+
+Evaluate
+[`` \lim_{x \to [$mb]^{+}} [$f] ``]
+
+Limit =  [_]{$ans}
+
+[@  helpLink('limits')  @]*
+
+END_PGML
+
+# ANS( $ans->cmp );
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: onesided
+author:
+  institution: UCSB
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Limits and Derivatives'
+keywords:
+- limits
+- derivatives
+- Product
+- Quotient
+- Differentiation
+library_info:
+  chapter: Limits and continuity
+  section: Infinite limits and vertical asymptotes
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGchoicemacros.pl
+- MathObjects.pl
+- AnswerFormatHelp.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C02S02-Limits/2-2-25.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '2'
+  problems: []
+  section: '2'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '2'
+  problems: []
+  section: '2'
+

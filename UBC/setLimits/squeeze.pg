@@ -1,0 +1,48 @@
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Numeric");
+
+$showPartialCorrectAnswers = 1;
+$a                         = random(1, 9, 1);
+
+BEGIN_PGML
+Evaluate the limit
+[``` \lim_{ x \rightarrow 0 } x \sin\left(\frac{[$a]}{x}\right)```]
+If the limit does not exist enter DNE.
+
+ Limit = [_]{$ans}{25}
+  
+END_PGML
+
+$ans = Compute(0);
+# ANS($ans->cmp());
+
+BEGIN_PGML_SOLUTION
+
+We know that [`-1 \leq \sin\left(\frac{[$a]}{x}\right) \leq 1`]. It follows that: [`-x \leq x \sin\left(\frac{[$a]}{x}\right) \leq x`].
+
+
+ Since [`\displaystyle \lim_{ x \rightarrow 0 } x = 0`], 
+[`\displaystyle \lim_{ x \rightarrow 0 } x \sin\left(\frac{[$a]}{x}\right)`] must also equal 0 by the Squeeze Theorem.
+END_PGML_SOLUTION
+
+ENDDOCUMENT(); 
+
+__DATA__
+---
+author: {}
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: Squeeze theorem
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- MathObjects.pl
+- PGcourse.pl
+problem_path: ../OPLnext/../webwork-open-problem-library/OpenProblemLibrary/UBC/setLimits/squeeze.pg
+

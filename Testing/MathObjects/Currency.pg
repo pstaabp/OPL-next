@@ -1,0 +1,12 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextCurrency.pl');
+
+Context('Currency');
+
+$t = Currency('1234');
+
+BEGIN_PGML
+[$t] = [_]{$t}
+END_PGML
+ENDDOCUMENT();

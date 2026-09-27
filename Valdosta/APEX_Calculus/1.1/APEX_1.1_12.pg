@@ -1,0 +1,83 @@
+
+#Problem APEX 1.1.12
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'niceTables.pl', 'PGcourse.pl');
+
+$showPartialCorrectAnswers = 0;
+
+Context("Numeric");
+
+$a = random(-4, 4);
+
+$b = random(2, 10);
+$c = $b - 2 * $a - 2;
+
+sub f_perl {
+    my $x = shift;
+    if   ($x > $a) { return 3 * $x + $c; }
+    else           { return $x + $b; }
+}
+
+$limi = String("DNE");
+
+BEGIN_PGML
+Let
+
+[`` f(x) = \begin{cases}
+   x + [$b] & \text{if } x \leq [$a], \\
+   3x + [$c] & \text{if } x > [$a]
+   \end{cases}
+``]
+
+Approximate the limit both numerically and graphically:    
+
+[`` \lim\limits_{x \to [$a]} f(x)  =``]  [_]{$limi}{5}
+
+(Enter DNE if the limit doesn't exist)
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[@ DataTable( [
+        [ ['\(x\)', headerrow=>1] , '\(f(x)\)' , '\(x\)' , '\(f(x)\)' ],
+        [ $a+.002 , f_perl($a+.002) , $a-.002 , f_perl($a-002) ],
+        [ $a+.001 , f_perl($a+.001) , $a-.001 , f_perl($a-.001) ],
+        [ $a+.0005 , f_perl($a+.0005) ,$a-.0005 , f_perl($a-.0005) ],
+        [ $a+.0001 , f_perl($a+.0001) , $a-.0001 , f_perl($a-.0001) ]
+   ], horizontalrules => 1, texalignment => "|c|c||c|c|"
+) @]***
+
+As [`x`] approaches [$a] from the left [`f(x)`] appears to be approaching [@ $a+$b @]; as [`x`] approaches [$a] from the right [`f(x)`] appears to be approaching [@ 3*$a + $c @].  These two values are not the same so [`f(x)`] does not have a limit as [`x`] approaches [$a]. 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+
+
+__DATA__
+---
+author:
+  institution: Valdosta State University
+  name: S. V. Ault
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: Estimating limits numerically
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGML.pl
+- niceTables.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/Valdosta/APEX_Calculus/1.1/APEX_1.1_12.pg
+textbook_info:
+- AuthorText: Hartman
+  EditionText: '3.0'
+  TitleText: APEX Calculus
+  chapter: '1'
+  problems:
+  - '12'
+  section: '1'
+

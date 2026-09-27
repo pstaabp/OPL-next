@@ -1,0 +1,54 @@
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+$a    = random(30, 90, 1);
+$area = Compute("2x + 2*$a/x")->reduce;
+
+BEGIN_PGML
+Suppose that a rectangle has an area of [$a] square meters.  Express
+the perimeter [`P`] as a function of the length [`x`] of one of
+the sides.
+
+[`P(x)`] = [_]{$area}{25}
+
+END_PGML
+
+ENDDOCUMENT();
+
+
+__DATA__
+---
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- ' ''models'
+library_info:
+  chapter: Rational equations and functions
+  section: Applications and models
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-48.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

@@ -1,0 +1,47 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserRadioButtons.pl', 'PGcourse.pl');
+
+@functions = ('n!', 'e^n', 'n^3', 'n^2 \ln n', 'n^2', 'n \ln n');
+
+@slice = random_subset(4, 0 .. $#functions);
+
+# Find the index of the smallest number.
+
+$min_index = 0;
+$min       = 4;
+for (0 .. $#slice) {
+    ($min, $min_index) = ($slice[$_], $_) if $slice[$_] < $min;
+}
+
+$radio = RadioButtons([ map {"\(\displaystyle $_ \)"} @functions[@slice] ],
+    $min_index);
+
+BEGIN_PGML
+
+[@ pretty_print ~~@slice @]
+
+Which function has the largest order?   That is, [` O(f(n)) `]. 
+
+[_]{$radio}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The correct answer is [$radio->correct_ans].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 5003
+  answers:
+  - B2
+- seed: 7242
+  answers:
+  - B1
+- seed: 1107
+  answers:
+  - B1

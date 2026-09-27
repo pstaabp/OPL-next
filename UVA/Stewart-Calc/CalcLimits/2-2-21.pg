@@ -1,0 +1,63 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Numeric');
+
+$a  = non_zero_random(-9, 9);
+$lp = random(3, 7);
+
+$ans = $a < 0 ? Compute("Infinity") : Compute("-Infinity");
+
+BEGIN_PGML
+
+Evaluate the following limit: 
+
+[`` \displaystyle \lim_{x \rightarrow [$lp]^{+}} \frac{[$a]}{x - [$lp]} ``]
+= [_]{$ans}{20}
+
+[@  helpLink('limits')  @]*
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: onesided
+author:
+  institution: UCSB
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Limits and Derivatives'
+keywords:
+- limits
+- derivatives
+- Product
+- Quotient
+- Differentiation
+library_info:
+  chapter: Limits and continuity
+  section: Infinite limits and vertical asymptotes
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGchoicemacros.pl
+- MathObjects.pl
+- AnswerFormatHelp.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C02S02-Limits/2-2-21.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '2'
+  problems: []
+  section: '2'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '2'
+  problems: []
+  section: '2'
+

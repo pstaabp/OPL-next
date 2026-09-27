@@ -1,0 +1,19 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'MathObjects.pl', 'PGML.pl', 'parserRadioMultiAnswer.pl', 'parserPopUp.pl',);
+
+$popup = PopUp([ '?', 'one', 'two', 'three' ], 'three');
+
+$rma = RadioMultiAnswer(
+	[ [ 'The solution set is %s', $popup ], ['This makes no sense.'] ], 0,
+	formats     => [ '%s. The solution set is %s.',           '%s. This makes no sense.' ],
+	tex_formats => [ '%s\text{. The solution set is }{%s}.', '%s\text{. This makes no sense.}' ]
+);
+
+BEGIN_PGML
+Give the answer. (Hint: The solution set is three.)
+
+[_____]{$rma}
+END_PGML
+
+ENDDOCUMENT();

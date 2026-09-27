@@ -1,0 +1,100 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'MathObjects.pl', 'PGML.pl', 'parserRadioMultiAnswer.pl', 'PGcourse.pl');
+
+$a = list_random(-1, 1) * random(2, 6);
+$b = list_random(-1, 1) * random(2, 6);
+$c = list_random(-1, 1) * random(1, 6);
+$d = list_random(-1, 1) * random(1, 6);
+$e = random(2, 5);
+$f = list_random(-1, 1) * random(2, 5);
+$g = random(2, 5);
+$h = random(2, 5);
+$i = random(2, 5);
+
+Context()->variables->add(y => 'Real', z => 'Real');
+$lhs1 = Formula("x +  $e y + ($a + $b * $e) z")->reduce;
+$lhs2 = Formula("$g x + $f y + ($f * $b + $g * $a) z")->reduce;
+$lhs3 = Formula("$h x + $i y + ($a * $h + $i * $b) z")->reduce;
+
+$uniqueContext = Context('Numeric');
+
+$ans_x = Compute(0);
+$ans_y = Compute(0);
+$ans_z = Compute(0);
+
+Context(Context()->copy);
+$uniqueContext->operators->undefine('+', '-', '*', ' *', '* ', '/', ' /', '/ ', '//', '^', '**');
+Context()->variables->are(t => 'Real');
+
+$inf_x = Compute("$c - $a t")->reduce;
+$inf_y = Compute("$d - $b t")->reduce;
+$inf_z = Compute('t');
+
+$rma = RadioMultiAnswer(
+	[
+		[ 'The unique solution is \(x =\) %s, \(y =\) %s, \(z =\) %s.', $ans_x, $ans_y, $ans_z ],
+		[
+			'There are an infinite number of solutions parameterized by \(x =\) %s, \(y =\) %s, \(z =\) %s.'
+				. $BR
+				. '(Give equations using \(t\) as the variable.)',
+			$inf_x, $inf_y, $inf_z
+		],
+		['There are no solutions.']
+	],
+	1,
+	formats => [
+		'%s. Unique solution: x = %s, y = %s, z = %s',
+		'%s. Parameterization: x = %s, y = %s, z = %s',
+		'%s. There are no solutions.'
+	],
+	tex_formats => [
+		'%s\text{. Unique solution: }{x = %s, y = %s, z = %s}',
+		'%s\text{. Parameterization: }{x = %s, y = %s, z = %s}',
+		'%s\text{. There are no solutions.}'
+	],
+	checker => sub {
+		my ($correct, $student, $self, $ans) = @_;
+		return 0 if ($ans->{isPreview});
+
+		# Check to see if the student gave a particular solution.
+		$self->appendMessage('You have found one solution, but there are others.')
+			if ($student->[0] == 1
+				&& $student->[1][0] ne ''
+				&& $student->[1][1] ne ''
+				&& $student->[1][2] ne ''
+				&& $student->[1][0] + $a * $student->[1][2] == $c
+				&& $student->[1][1] + $b * $student->[1][2] == $d);
+
+		return 0 if ($student->[0] != $correct->[0]);
+
+		return 1
+			if (Value::classMatch($student->[2][0], 'Formula')
+				&& Value::classMatch($student->[2][1], 'Formula')
+				&& Value::classMatch($student->[2][2], 'Formula')
+				&& $student->[2][0] + $a * $student->[2][2] == $c
+				&& $student->[2][1] + $b * $student->[2][2] == $d);
+
+		$self->appendMessage('There are an infinite number of solutions, but your parameterization is incorrect.');
+		return 0;
+	}
+);
+
+Context()->operators->undefine('/', ' /', '/ ', '//', '^', '**');
+
+BEGIN_PGML
+Solve the system using Gaussian elimination.
+
+    [`[$lhs1] = [$c + $d * $e]`]
+
+    [`[$lhs2] = [$f * $d + $g * $c]`]
+
+    [`[$lhs2] = [$c * $h + $d * $i]`]
+
+What is the solution to the system of linear equations?  Select the correct choice below and, if
+neccessary, fill in the answer box to complete your choice.
+
+[_]{answer=>$rma, width => [[5, 5, 5], [12, 12, 12]]}
+END_PGML
+
+ENDDOCUMENT();

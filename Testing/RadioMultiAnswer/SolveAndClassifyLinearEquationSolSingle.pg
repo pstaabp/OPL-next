@@ -1,0 +1,119 @@
+DOCUMENT();
+
+loadMacros(
+	'PGstandard.pl',      'MathObjects.pl', 'PGML.pl', 'parserRadioMultiAnswer.pl',
+	'contextFraction.pl', 'PGcourse.pl'
+);
+
+Context('Fraction-NoDecimals');
+Context()->flags->set(reduceFractions => 0);
+
+@a_vals   = (3, 2, 5, 5,  8,  9,  13, 17, 21, 23);
+@b_vals   = (5, 7, 9, 15, 19, 21, 17, 17, 19, 16);
+@c_vals   = (4, 3, 7, 7,  7,  17, 15, 15, 15, 5);
+@d_vals   = (2, 3, 2, 9,  3,  2,  6,  8,  5,  2);
+$list_elt = random(0, scalar(@a_vals) - 1);
+$a        = $a_vals[$list_elt];
+$b        = $b_vals[$list_elt];
+$c        = $c_vals[$list_elt];
+$d        = $d_vals[$list_elt];
+
+Context()->noreduce('(-x)-y', '(-x)+y');
+$lhs = Formula("$a($b - x)")->reduce();
+$rhs = Formula("$c($d x + 1)")->reduce();
+
+$sol = Fraction("($a * $b - $c) / ($c * $d + $a)")->reduce();
+
+$rma = RadioMultiAnswer(
+	[
+		[
+			'The solution set is \(\big\{\) %s \(\big\}\).'
+				. $BR
+				. MODES(TeX => '{\color{blue} ', HTML => '<span style="color:DarkBlue">')
+				. '(Give an integer or simplified fraction.  Use a comma to separate answers as needed.)'
+				. MODES(TeX => '}', HTML => '</span>'),
+			List($sol)
+		],
+		['The solution is all real numbers.'],
+		['The solution is the empty set.']
+	],
+	0
+)->with(
+	formats => [
+		'%1$s. The solution set is {%2$s}.',
+		'%1$s. The solution is all real numbers.',
+		'%1$s. The solution is the empty set.'
+	],
+	tex_formats => [
+		'%1$s\text{. The solution set is }{\left\{%2$s\right\}}.',
+		'%1$s\text{. The solution is all real numbers.}',
+		'%1$s\text{. The solution is the empty set.}'
+	],
+	checkTypes        => 0,
+	allowBlankAnswers => 1,
+	checker           => sub {
+		my ($correct, $student, $self, $ans) = @_;
+		return 0 if $student->[0] != $correct->[0];
+
+		my $score = 1;
+		my @errors;
+		my $sol_stu = $student->[1][0];
+
+		if ($sol_stu->type eq 'Number') {
+			if (Value::classMatch($sol_stu, 'Fraction') && !$sol_stu->isReduced) {
+				push(@errors, 'Your answer is not simplified.');
+				$score -= 0.2;
+			}
+			if ($sol_stu == $correct->[1][0]{data}[0]) {
+				$rma->appendMessage(@errors);
+				return $score;
+			}
+		}
+
+		return 0;
+	}
+);
+
+$rma->{cmp}[0][0]->rh_ans(showTypeWarnings => 0, studentsMustReduceFractions => 1, showFractionReduceWarnings => 0);
+
+Context()->operators->undefine('+', '-', '*', ' *', '* ', '^', '**');
+
+BEGIN_PGML
+Solve the following equation.
+
+>>[`[$lhs] = [$rhs]`]<<
+
+Select the correct choice below, and, if necessary, fill in the answer box to complete your
+choice.
+
+[_____]{$rma}
+END_PGML
+
+$showHint = 0;
+BEGIN_PGML_HINT
+To solve a linear equation, first simplify the expressions on each side of the equation.
+Collect variable terms on one side of the equation and constant terms on the other.  The isolate
+the variable and solve.  Check the proposed solution in the original equation.
+END_PGML_HINT
+
+BEGIN_PGML_SOLUTION
+Simplify the expressions on both sides of the equation to obtain
+
+>> [``[@ $a * $b @] - [$a]x = [@ $c * $d @]x + [$c]``] <<
+
+Subtract [`[@ $a * $b @]`] from both sides to obtain
+
+>> [``-[$a]x = [@ $c * $d @]x + [@ $c - $a * $b @]``] <<
+
+Subtract [`[@ $c * $d @]x`] from both sides to obtain
+
+>> [``[@ -$a - $c * $d @]x = [@ $c - $a * $b @]``] <<
+
+Divide by [`[@ -$a - $c * $d @]`] on both sides to obtain
+
+>> [``x = [$sol]``] <<
+
+Thus the solution set is [`\{[$sol]\}`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

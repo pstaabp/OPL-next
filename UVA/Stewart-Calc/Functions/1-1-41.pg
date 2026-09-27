@@ -1,0 +1,60 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+$a = non_zero_random(-9, 9);
+$b = non_zero_random(-9, 9);
+$c = non_zero_random(-9, 9);
+$d = non_zero_random(-9, 9);
+
+while ($a == $c) {
+    $c = non_zero_random(-9, 9);
+}
+
+$m = ($d - $b) / ($c - $a);
+
+BEGIN_PGML
+Find an expression for the function [`f(x)`] whose graph is a line
+passing through the points [`([$a],[$b])`] and [`([$c],[$d])`].
+
+[`f(x)`] = [_]{Compute("$m*(x-$a) +$b")}{25}
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: Function_from_two_points
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- models
+library_info:
+  chapter: Linear equations and functions
+  section: Linear functions
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-41.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

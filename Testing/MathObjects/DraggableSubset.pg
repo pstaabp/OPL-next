@@ -1,0 +1,29 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'draggableSubsets.pl');
+
+$draggable = DraggableSubsets(
+    [
+        'mouse',        'ebola bacteria',
+        'flu virus',    'krill',
+        'house cat',    'emu',
+        'coyote',       'tapir',
+        'hippopotamus', 'elephant',
+        'blue whale',   'eagle'
+    ],
+    [ [], [ 0, 4, 6, 7, 8, 9, 10 ], [ 5, 11 ], [ 1, 2, 3 ] ],
+    DefaultSubsets => [
+        { label => 'Animals', indices => [ 0 .. 11 ] },
+        { label => 'Mammals', indices => [] },
+        { label => 'Birds',   indices => [] },
+        { label => 'Other',   indices => [] }
+    ],
+    AllowNewBuckets => 0,
+    OrderedSubsets  => 1
+);
+
+BEGIN_PGML
+Move all animals from the "Animals" bucket into its appropriate bucket.
+
+[_]{$draggable}
+END_PGML
+ENDDOCUMENT();

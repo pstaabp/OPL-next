@@ -1,0 +1,16 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserDifferenceQuotient.pl');
+
+Context('Numeric');
+
+$df = DifferenceQuotient("2x+h","h");
+
+BEGIN_PGML
+
+Find the difference quotient for [`f(x) = x^2`]
+
+[_]{$df}
+
+END_PGML
+
+ENDDOCUMENT();

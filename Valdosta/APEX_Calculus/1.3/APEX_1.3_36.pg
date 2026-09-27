@@ -1,0 +1,73 @@
+# Problem APEX 1.3.36
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Numeric");
+$a = random(1, 10, 1);
+#$b=random(-7,7,2);
+$b = Compute("2*$a");
+$c = Compute("$b*$a - $a**2");
+
+$amin = Compute("$a - 2");
+$amax = Compute("$a + 2");
+$ans  = Compute("$a**2");
+
+BEGIN_PGML
+Use the Squeeze Theorem to evaluate the limit 
+[`` \lim_{x\to [$a]} f(x) ``]
+if
+[```
+  [$b] x - [$c] \leq f(x) \leq x^2 
+```]
+on the interval [`[[$amin], [$amax]]`].
+
+[`` \lim_{x\to [$a]} f(x) = ``] [_]{$ans}{10}
+
+Enter *DNE* if the limit does not exist.
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Since 
+[```
+  \lim_{x \to [$a]} ([$b] x - [$c]) = [$b]([$a]) - [$c] = [$ans] 
+```] and 
+[```
+  \lim_{x \to [$a]} x^2 = ([$a])^2 = [$ans],
+```]
+by the Squeeze Theorem it must also be true that 
+[``` 
+    \lim_{x\to [$a]} f(x) = [$ans].
+```] 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+
+__DATA__
+---
+author:
+  institution: Valdosta State University
+  name: S. V. Ault
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: Squeeze theorem
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/Valdosta/APEX_Calculus/1.3/APEX_1.3_36.pg
+textbook_info:
+- AuthorText: Hartman
+  EditionText: '3.0'
+  TitleText: APEX Calculus
+  chapter: '1'
+  problems:
+  - '36'
+  section: '3'
+

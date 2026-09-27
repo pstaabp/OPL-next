@@ -1,0 +1,89 @@
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserPopUp.pl', 'PGcourse.pl');
+Context('Numeric');
+
+## First we set up our variables.
+$e1 = random(-6, -2, 2);
+$e2 = non_zero_random(-6, 10, 2);
+$e3 = random( 2, 6,  2);
+$e4 = random( 2, 8,  2);
+$e5 = random( 2, 10, 2);
+$o1 = random(-3, 5,  2);
+$o2 = random( 3, 9,  2);
+$o3 = random(-7, 9,  2);
+$o4 = random(-3, 3,  2);
+$o5 = random( 3, 9,  2);
+
+@functions = map { $_->reduce } (
+    Compute("x^($e1)"),
+    Compute("x^($e4) + 3 x^($e2) + 2 x^($o3)"),
+    Compute("x^($e4) - 6 x^($e2) + 3 x^($e3)"),
+    Compute("-5 x^($e4) - 3 x^($e2) -2"),
+    Compute("x^($o4) + x^($o2) + x^($o3)"),
+    Compute("3x^($o3) -7 x^($o2) + x^($o5)"),
+    Compute("4x^($o3) + 2 x^($e2) + 6 x^($o4)")
+);
+
+@answers = (0, 2, 0, 0, 1, 1, 2);
+
+## Now choose randomly 4  questions out of the functions above.
+@slice = random_subset(4, 0 .. $#functions);
+
+@ordered_functions = @functions[@slice];
+
+@drops = map { DropDown([ 'Even', 'Odd', 'Neither' ], $_) } @answers[@slice];
+
+BEGIN_PGML
+
+For each of the following functions, decide whether it is
+even, odd, or neither.
+
+a) [`` f(x) = [$ordered_functions[0]] ``] [_]{$drops[0]}
+
+b) [`` f(x) = [$ordered_functions[1]] ``] [_]{$drops[1]}
+
+c) [`` f(x) = [$ordered_functions[2]] ``] [_]{$drops[2]}
+
+d) [`` f(x) = [$ordered_functions[3]] ``] [_]{$drops[3]}
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: Symmetry-even-odd-neither_2
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- ' ''models'
+library_info:
+  chapter: Transformations of functions and graphs
+  section: 'Symmetry: even, odd, neither'
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGchoicemacros.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-59.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

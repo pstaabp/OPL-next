@@ -1,0 +1,66 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Interval');
+
+$a = non_zero_random(-8, 8);
+
+do {
+    $r1 = non_zero_random(-8, 8);
+    $r2 = non_zero_random(-8, 8);
+    $c  = $r1 * $r2;
+    $b  = -($r1 + $r2);
+} until ($b != 0 and $b**2 != 1);
+
+$num = Compute("x^2 + $b x + $c")->reduce;
+$den = Compute("x -$r1 ")->reduce;
+
+BEGIN_PGML
+
+Let
+[``` f(x) = \frac{[$num]}{[$den]} . ```]
+Find the domain of [` f(x) `].
+
+Domain = [_]{Interval("(-inf,$r1)U($r1,inf)")}{25}
+
+[@ helpLink('interval notation') @]*
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+MLT: algebra_functions_domain_range_poly_over_poly
+author:
+  institution: UVA
+  name: Jeff Holt
+date: 2005-05-26
+description: 'Calculus: Functions'
+keywords:
+- calculus
+- functions
+- models
+library_info:
+  chapter: Functions
+  section: Domain and range
+  subject: Algebra
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UVA-Stew5e/setUVA-Stew5e-C01S01-Functions/1-1-36.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '1'
+  problems: []
+  section: '1'
+

@@ -1,0 +1,35 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'parserRadioButtons.pl',
+);
+
+$values = [ 'Inconsistent', 'Conditional', 'Identity' ];
+$radio  = RadioButtons(
+    [$values], 0,
+    labels        => 'ABC',
+    displayLabels => 1,
+    values        => $values
+);
+
+$rma = RadioMultiAnswer(
+    [ [ "The solution set is:$BR %s", $radio ], ['This makes no sense.'] ],
+    0,
+    formats =>
+        [ '%s. The solution set is %s.', '%s. This makes no sense.' ],
+    tex_formats => [
+        '%s\text{. The solution set is }{%s}.',
+        '%s\text{. This makes no sense.}'
+    ],
+    uncheckable => 'shift',
+    values      => [ 'The solution set is ?. ', 'This makes no sense. ' ]
+);
+
+BEGIN_PGML
+Give the answer.  (Hint: The solution set is Inconsistent.)
+
+[_]{$rma}
+END_PGML
+
+ENDDOCUMENT();

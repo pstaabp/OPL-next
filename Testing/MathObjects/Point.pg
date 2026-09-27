@@ -1,0 +1,35 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl');
+Context('Point');
+
+($x,$y,$z) = (random(-5,5), random(-5, 5), random(-5,5));
+
+$pt1 = Point($x,$y);
+$pt2 = Point($x,$y,$z);
+
+BEGIN_PGML
+Enter the following intervals:
+
+* [`` [$pt1]= ``] [_]{$pt1}
+* [`` [$pt2]= ``] [_]{$pt2}
+
+
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 123456
+  answers:
+  - '(2,-2)'
+  - '(2,-2,-2)'
+- seed: 3114
+  answers:
+  - '(3,0)'
+  - '(3,0,5)'
+- seed: 5586
+  answers:
+  - '(0,-5)'
+  - '(0,-5,1)'

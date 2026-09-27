@@ -1,0 +1,46 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Interval');
+
+$a = random(-5,5);
+$b = $a + random(2,8);
+
+$interval1 = Interval("[$a,$b]");
+$interval2 = Interval("[$a,$b)");
+$interval3 = Interval("($a,$b]");
+$interval4 = Interval("($a,$b)");
+
+BEGIN_PGML
+Enter the following intervals:
+
+* [`` [$interval1]= ``] [_]{$interval1}
+* [`` [$interval2]= ``] [_]{$interval2}
+* [`` [$interval3]= ``] [_]{$interval3}
+* [`` [$interval4]= ``] [_]{$interval4}
+END_PGML
+
+ENDDOCUMENT();
+
+__DATA__
+---
+testing:
+- seed: 123456
+  answers:
+  - '[2,6]'
+  - '[2,6)'
+  - '(2,6]'
+  - '(2,6)'
+- seed: 970
+  answers:
+  - '[-1,7]'
+  - '[-1,7)'
+  - '(-1,7]'
+  - '(-1,7)'
+- seed: 2150
+  answers:
+  - '[-5,1]'
+  - '[-5,1)'
+  - '(-5,1]'
+  - '(-5,1)'

@@ -1,0 +1,26 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserRadioMultiAnswer.pl');
+
+Context('Matrix');
+
+$A = Matrix([[ random(-3, 3), random(-3, 3) ], [ random(-3, 3), random(-3, 3) ]]);
+$det = $A->det;
+
+$Ainv = $det == 0 ? Matrix([ [ 0, 0 ], [ 0, 0 ] ]) : $A->inverse;
+
+$rma = RadioMultiAnswer(
+    [ ['The inverse does not exist.'], [ 'The inverse is %s*', $Ainv ], ],
+    $det == 0 ? 0 : 1);
+
+BEGIN_PGML
+Let
+[```[$A] ```]
+
+
+Find the inverse of [`A`] if it exists: 
+
+[_]{$rma}
+
+END_PGML
+ENDDOCUMENT();

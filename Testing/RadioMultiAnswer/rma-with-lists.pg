@@ -1,0 +1,21 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserRadioMultiAnswer.pl');
+
+$list  = List(1);
+$list2 = List(1, 2);
+
+$rma = RadioMultiAnswer(
+    [
+        ['No numbers.'],
+        [ "The list \($list\):$BR %s",  $list ],
+        [ "The list \($list2\):$BR %s", $list2 ]
+    ],
+    1
+);
+
+BEGIN_PGML
+[_]{$rma}
+END_PGML
+
+ENDDOCUMENT();

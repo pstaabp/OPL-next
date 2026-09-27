@@ -1,0 +1,81 @@
+DOCUMENT();
+loadMacros(qw(
+    PGstandard.pl
+    PGML.pl
+    parserRadioMultiAnswer.pl
+    PGcourse.pl
+));
+$showPartialCorrectAnswers = 1;
+
+Context('Matrix');
+$A = Matrix([
+    [ non_zero_random(-5, 5, 1), non_zero_random(-5, 5, 1) ],
+    [ non_zero_random(-5, 5, 1), non_zero_random(-5, 5, 1) ],
+]);
+$B = Matrix([
+    [ non_zero_random(-5, 5, 1), non_zero_random(-5, 5, 1) ],
+    [ non_zero_random(-5, 5, 1), non_zero_random(-5, 5, 1) ],
+    [ non_zero_random(-5, 5, 1), non_zero_random(-5, 5, 1) ],
+]);
+$C = Matrix([
+    [ non_zero_random(-5, 5, 1), non_zero_random(-5, 5, 1) ],
+    [ non_zero_random(-5, 5, 1), non_zero_random(-5, 5, 1) ],
+]);
+
+$k1   = random(2, 7, 1);
+$k2   = random(2, 7, 1);
+$ans1 = -$k1 * $B;
+$ans2 = $k1 * $A - $k2 * $C;
+
+$ma1 = RadioMultiAnswer(
+    [
+        ["The scalar product \(-$k1 B\) does not exist."],
+        [ "The scalar product \(-$k1 B\) is %s*.", $ans1->copy ],
+        [ "The scalar product \(-$k1 B\) is %s*.", $ans2->copy ]
+    ],
+    1,
+    labels => [ 'I', 'II', 'III' ]
+);
+$ma2 = RadioMultiAnswer(
+    [
+        ["The matrix sum \(A + B\) does not exist."],
+        [ "The matrix sum \(A + B\) is %s*.", $ans1->copy ],
+        [ "The matrix sum \(A + B\) is %s*.", $ans2->copy ]
+    ],
+    0,
+    labels => [ 'I', 'II', 'III' ]
+);
+$ma3 = RadioMultiAnswer(
+    [
+        ["The linear combination \($k1 A - $k2 C\;\) does not exist."],
+        [ "The linear combination \($k1 A - $k2 C\;\) is %s*.", $ans1->copy ],
+        [ "The linear combination \($k1 A - $k2 C\;\) is %s*.", $ans2->copy ]
+    ],
+    2,
+    labels => [ 'I', 'II', 'III' ]
+);
+
+BEGIN_PGML
+Consider the three matrices:
+
+        [``A=[$A]``], [``B=[$B]``], and [``C=[$C]``]
+
+For each of the following matrix operations,
+determine if the operation is defined or not. If the
+operation is defined, select the appropriate form,
+then enter in the answer.
+
+a) Compute the scalar product [``-[$k1]B``]:
+
+        [_]*{$ma1}
+
+b) Compute the matrix sum [``A + B``]:
+
+        [_]*{$ma2}
+
+c) Compute the linear combination [``[$k1]A - [$k2]C\;``]:
+
+        [_]*{$ma3}
+
+END_PGML
+ENDDOCUMENT();

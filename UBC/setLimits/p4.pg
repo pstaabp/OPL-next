@@ -1,0 +1,72 @@
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'PGcourse.pl'
+);
+
+$a = random(1, 8);
+
+$rma =
+    RadioMultiAnswer([ ['The limit does not exist'], [ 'The limit is %s', 0 ] ],
+        0);
+
+BEGIN_PGML
+Evaluate the limit
+[``` \lim_{ x \rightarrow [$a] } \frac{|x - [$a]|}{x - [$a]}```]
+
+[_]{$rma}
+END_PGML
+
+$ans = "DNE";
+# ANS(num_cmp($ans, strings=>["DNE"]));
+
+BEGIN_PGML_SOLUTION
+
+Let [`f(x) = \frac{|x-[$a]|}{x-[$a]}`].
+
+[`f(x) =\begin{cases}
+         \frac{-(x-[$a])}{x-[$a]} &  x < [$a]\\
+         \frac{x-[$a]}{x-[$a]} & x > [$a]\\
+       \end{cases} `]
+
+[`f(x) =\begin{cases}
+         -1 &  x < [$a]\\
+         1 & x > [$a]\\
+       \end{cases}`]
+       
+From this it should be clear that [` \displaystyle \lim_{ x \rightarrow [$a] } \frac{|x - [$a]|}{x - [$a]} `] does not exist.
+END_PGML_SOLUTION
+
+__DATA__
+---
+author:
+  institution: ASU
+description: Limits with an absolute Value
+keywords:
+- calculus
+- limits
+library_info:
+  chapter: Limits and continuity
+  section: Evaluating limits - factoring
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGML.pl
+- parserRadioMultiAnswer.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/UBC/setLimits/p4.pg
+textbook_info:
+- AuthorText: Stewart
+  EditionText: '5e'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '2'
+  problems: []
+  section: '3'
+- AuthorText: Stewart
+  EditionText: '6'
+  TitleText: 'Calculus: Early Transcendentals'
+  chapter: '2'
+  problems: []
+  section: '3'
+

@@ -1,0 +1,31 @@
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserMultiAnswer.pl', 'PGcourse.pl');
+
+Context('Matrix');
+
+$k    = non_zero_random(-3, 3);
+$prod = Matrix([ 1, $k ],     [ 0, 1 ]);
+$A    = Matrix([ 1, 1 ],      [ 0, 1 ]);
+$B    = Matrix([ 1, $k - 1 ], [ 0, 1 ]);
+
+$multiAns = MultiAnswer($A, $B)->with(
+    singleResult => 0,
+    checker      => sub {
+        my ($correct, $student, $self) = @_;
+        my ($Astu, $Bstu) = @$student;
+        my ($Acor, $Bcor) = @$correct;
+        if ($Astu * $Bstu == $prod) {
+            return [ 1, 1 ];
+        }
+    }
+);
+
+BEGIN_PGML
+Find two [`2 \times 2`] matrices [`A`] and [`B`] with 
+[``` AB = [$prod] ```]
+
+[`` A = ``] [_]*{$multiAns}
+[`` B = ``] [_]*{$multiAns}
+
+END_PGML
+ENDDOCUMENT();

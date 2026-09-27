@@ -1,0 +1,61 @@
+#Problem APEX 1.3.28
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Numeric");
+$b = random(2, 8, 1);
+
+$ans = Compute("1/$b");
+
+BEGIN_PGML
+Evaluate the limit:
+
+[`` 
+  \lim_{ x \to [$b] } \frac{x - [$b]}{x^2 - [$b] x} =
+``] [_]{$ans}{10}
+
+Enter *DNE* if the limit does not exist.
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The limit is
+[```
+  \lim_{x \to [$b]} \frac{x - [$b]}{x^2 - [$b] x}
+  = \lim_{x \to [$b]} \frac{x - [$b]}{x(x - [$b])}
+  = \lim_{x \to [$b]} \frac{1}{x}
+  = \frac{1}{[$b]}.
+```]
+ 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+
+__DATA__
+---
+author:
+  institution: Valdosta State University
+  name: S. V. Ault
+description: ''
+keywords: []
+library_info:
+  chapter: Limits and continuity
+  section: Evaluating limits - factoring
+  subject: Calculus - single variable
+macros:
+- PGstandard.pl
+- PGML.pl
+- PGcourse.pl
+problem_path: OpenProblemLibrary/Valdosta/APEX_Calculus/1.3/APEX_1.3_28.pg
+textbook_info:
+- AuthorText: Hartman
+  EditionText: '3.0'
+  TitleText: APEX Calculus
+  chapter: '1'
+  problems:
+  - '28'
+  section: '3'
+

@@ -1,0 +1,27 @@
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl');
+Context('Complex');
+
+$a=non_zero_random(-4,4);
+$b=non_zero_random(-4,4);
+$c=non_zero_random(-4,4);
+$d=non_zero_random(-4,4);
+
+$z=Complex($a,$b);
+$w=Complex($c,$d);
+
+$z1 = $z+$w;
+$z2 = $z-$w;
+$z3 = $z*$w;
+$z4 = $z/$w;
+
+BEGIN_PGML
+
+a) [`([$z]) + ([$w]) = `] [_]{$z1}
+b) [`([$z]) - ([$w]) = `] [_]{$z2}
+c) [`([$z]) \cdot ([$w]) = `] [_]{$z3}
+d) [``\frac{[$z]}{[$w]} = ``] [_]{$z4} 
+
+END_PGML
+ENDDOCUMENT();
